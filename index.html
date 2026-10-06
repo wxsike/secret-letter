@@ -16,16 +16,17 @@
         body {
             min-height: 100vh;
             min-height: 100dvh;
-            background: radial-gradient(circle at center, #5c0612 0%, #1a0104 100%);
+            background: radial-gradient(circle at 50% 50%, #5c0612 0%, #1a0104 100%);
             display: flex;
             justify-content: center;
             align-items: center;
             overflow: hidden;
             color: #fff;
             touch-action: manipulation;
+            transition: background 0.1s ease-out;
         }
 
-        /* Floating Hearts Background */
+        /* Floating Background Hearts */
         .hearts-container {
             position: fixed;
             top: 0;
@@ -35,6 +36,7 @@
             pointer-events: none;
             overflow: hidden;
             z-index: 1;
+            transition: transform 0.1s ease-out;
         }
 
         .heart {
@@ -50,11 +52,30 @@
                 transform: translateY(0) scale(0.8) rotate(0deg);
                 opacity: 0;
             }
-            20% {
-                opacity: 0.8;
-            }
+            20% { opacity: 0.8; }
             100% {
                 transform: translateY(-105vh) scale(1.3) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Heart Explosion Effect */
+        .burst-heart {
+            position: fixed;
+            pointer-events: none;
+            z-index: 100;
+            animation: burst 1.2s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+            user-select: none;
+        }
+
+        @keyframes burst {
+            0% {
+                transform: translate(-50%, -50%) scale(0.3) rotate(0deg);
+                opacity: 1;
+            }
+            70% { opacity: 1; }
+            100% {
+                transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1.4) rotate(360deg);
                 opacity: 0;
             }
         }
@@ -73,18 +94,18 @@
         }
 
         .screen.hidden {
-            display: none;
+            display: none !important;
             opacity: 0;
         }
 
         /* Passcode Card */
         .passcode-card {
-            background: rgba(35, 3, 8, 0.85);
-            border: 1px solid rgba(255, 100, 120, 0.25);
-            backdrop-filter: blur(10px);
+            background: rgba(35, 3, 8, 0.88);
+            border: 1px solid rgba(255, 100, 120, 0.3);
+            backdrop-filter: blur(12px);
             padding: 35px 25px;
             border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
             text-align: center;
             max-width: 340px;
             width: 88%;
@@ -119,7 +140,7 @@
             height: 52px;
             border-radius: 10px;
             border: 2px solid #800c1d;
-            background: rgba(15, 2, 4, 0.6);
+            background: rgba(15, 2, 4, 0.7);
             color: #fff;
             font-size: 22px;
             text-align: center;
@@ -190,7 +211,7 @@
             50% { opacity: 1; transform: scale(1.02); }
         }
 
-        /* Sleek Black Envelope */
+        /* Sleek Envelope */
         .envelope {
             position: relative;
             width: 300px;
@@ -216,7 +237,6 @@
             z-index: 4;
         }
 
-        /* White Seal on Top Flap */
         .white-seal {
             position: absolute;
             top: -110px;
@@ -257,19 +277,21 @@
             z-index: 3;
         }
 
-        /* Black Letter Paper */
+        /* Semi-Transparent Black Letter Paper */
         .letter {
             position: absolute;
             bottom: 8px;
             left: 12px;
             width: 276px;
             height: 178px;
-            background: #1c1c1e;
+            background: rgba(22, 22, 26, 0.78);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             color: #f2f2f7;
             border-radius: 8px;
             padding: 20px 16px;
-            border: 1px solid #3a3a3c;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
             transition: transform 0.8s ease-in-out, height 0.8s ease-in-out, z-index 0.8s;
             z-index: 2;
             
@@ -301,6 +323,31 @@
             margin-top: 18px;
             font-style: italic;
             color: #ffccd5;
+        }
+
+        /* Dark Theme Press Here Button */
+        .love-btn-wrapper {
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        #loveBtn {
+            background: linear-gradient(135deg, #0d0204, #2b0308);
+            color: #ff4d6d;
+            border: 1.5px solid #a81329;
+            padding: 10px 22px;
+            border-radius: 20px;
+            font-family: inherit;
+            font-size: 13.5px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.8), 0 0 10px rgba(168, 19, 41, 0.3);
+            transition: transform 0.2s, background 0.3s, border-color 0.3s, box-shadow 0.3s;
+        }
+
+        #loveBtn:active {
+            transform: scale(0.95);
         }
 
         /* Open Envelope State */
@@ -359,24 +406,21 @@
                 <div class="top-flap">
                     <div class="white-seal">🤍</div>
                 </div>
-                <div class="letter">
-                    <div class="letter-content">
+                <div class="letter" id="letterBox">
+                    <div class="letter-content" id="letterContent">
                         <h1>LIVIA ,</h1>
-                        
                         <p>Hey Liv🙃</p>
-                        
                         <p>I want to grow old with you, till I spend my last breath with us being together. I know love isn’t just a feeling,it’s a choice. It’s actions, it’s consideration, it’s consistency, it’s compromise, and most importantly, it’s a decision.</p>
-                        
                         <p>And honestly Liv , choosing you is the easiest decision I could ever make.(you made it harder not to😭😂🙃)</p>
-                        
                         <p>Every single day with you reminds me why those words matter so much. You bring a warmth into my life that I never want to lose, and being around you just feels like home. I don't just want the big, unforgettable moments with you; I want the quiet ordinary days, the shared laughs, the tough times, and everything in between. I want to build something real with you,where you always feel adored, valued, and completely seen.</p>
-                        
                         <p>You mean more to me than I can fully put into words, but I just wanted you to know exactly where my heart is❤️🫶🏾.</p>
-                        
                         <p class="signature">
                             Forever yours WAYNE(more like Batman )<br>
-                        
+                            Wayne
                         </p>
+                    </div>
+                    <div class="love-btn-wrapper">
+                        <button id="loveBtn">press here 🖤❤️</button>
                     </div>
                 </div>
                 <div class="front"></div>
@@ -395,11 +439,91 @@
         const letterScreen = document.getElementById('letterScreen');
         const envelopeWrapper = document.getElementById('envelopeWrapper');
         const bgMusic = document.getElementById('bgMusic');
+        const loveBtn = document.getElementById('loveBtn');
+        const letterBox = document.getElementById('letterBox');
+        const heartsContainer = document.getElementById('heartsContainer');
 
         let audioUnlocked = false;
 
-        // Force browser audio permission on any early user interaction
+        // Custom Synthesized Audio Effects
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        let audioCtx;
+
+        function initAudioCtx() {
+            if (!audioCtx) {
+                audioCtx = new AudioCtx();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function playClickSound() {
+            initAudioCtx();
+            if (!audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.05);
+            gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.05);
+        }
+
+        function playPaperSound() {
+            initAudioCtx();
+            if (!audioCtx) return;
+            const bufferSize = audioCtx.sampleRate * 0.15;
+            const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+            const data = buffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) {
+                data[i] = Math.random() * 2 - 1;
+            }
+            const noise = audioCtx.createBufferSource();
+            noise.buffer = buffer;
+            const filter = audioCtx.createBiquadFilter();
+            filter.type = 'bandpass';
+            filter.frequency.value = 800;
+            filter.Q.value = 0.5;
+            const gain = audioCtx.createGain();
+            gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+            noise.connect(filter);
+            filter.connect(gain);
+            gain.connect(audioCtx.destination);
+            noise.start();
+        }
+
+        // Heart Burst Effect with Black and Red Hearts
+        function explodeHearts() {
+            const symbols = ['🖤', '❤️', '🖤', '💖', '🥀', '🖤', '💓'];
+            for (let i = 0; i < 35; i++) {
+                const p = document.createElement('div');
+                p.className = 'burst-heart';
+                p.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                
+                const angle = Math.random() * Math.PI * 2;
+                const dist = Math.random() * 180 + 60;
+                const tx = Math.cos(angle) * dist;
+                const ty = Math.sin(angle) * dist - 60;
+                
+                p.style.left = '50%';
+                p.style.top = '50%';
+                p.style.setProperty('--tx', `${tx}px`);
+                p.style.setProperty('--ty', `${ty}px`);
+                p.style.fontSize = (Math.random() * 12 + 16) + 'px';
+                
+                document.body.appendChild(p);
+                setTimeout(() => p.remove(), 1200);
+            }
+        }
+
         function enableAudioContext() {
+            initAudioCtx();
             if (!audioUnlocked) {
                 bgMusic.play().then(() => {
                     audioUnlocked = true;
@@ -417,9 +541,10 @@
             }
         }
 
-        // Handle typing & auto-focus on mobile keypads
+        // Keypad inputs
         pinInputs.forEach((input, index) => {
             input.addEventListener('input', (e) => {
+                playClickSound();
                 if (e.target.value.length === 1 && index < pinInputs.length - 1) {
                     pinInputs[index + 1].focus();
                 }
@@ -428,6 +553,7 @@
 
             input.addEventListener('keydown', (e) => {
                 if (e.key === 'Backspace' && !e.target.value && index > 0) {
+                    playClickSound();
                     pinInputs[index - 1].focus();
                 }
             });
@@ -442,6 +568,7 @@
         function verifyPasscode() {
             const enteredPin = getEnteredPin();
             if (enteredPin === CORRECT_PASSCODE) {
+                playClickSound();
                 playMusic();
                 errorMsg.classList.remove('visible');
                 passcodeScreen.style.opacity = '0';
@@ -475,22 +602,56 @@
             verifyPasscode();
         });
 
-        // Toggle Letter Open/Close on Envelope Click/Tap
-        envelopeWrapper.addEventListener('click', () => {
+        // Envelope interaction
+        envelopeWrapper.addEventListener('click', (e) => {
+            if (e.target.closest('#loveBtn')) return;
+            
+            playPaperSound();
             playMusic();
+            
             envelopeWrapper.classList.toggle('open');
             const hint = document.querySelector('.tap-hint');
+            
             if (envelopeWrapper.classList.contains('open')) {
                 hint.textContent = 'Tap envelope to close';
+                explodeHearts();
             } else {
                 hint.textContent = 'Tap the envelope to open';
             }
         });
 
-        // Generate Animated Floating Hearts
+        // Interactive Scroll Background Effect
+        letterBox.addEventListener('scroll', () => {
+            const maxScroll = letterBox.scrollHeight - letterBox.clientHeight;
+            if (maxScroll <= 0) return;
+            
+            const scrollRatio = letterBox.scrollTop / maxScroll;
+            
+            // Shift radial gradient focal center dynamically on scroll
+            const xOffset = 50 + (scrollRatio * 20 - 10);
+            const yOffset = 50 + (scrollRatio * 30 - 15);
+            
+            document.body.style.background = `radial-gradient(circle at ${xOffset}% ${yOffset}%, #7a0818 0%, #1a0104 100%)`;
+            
+            // Parallax shift floating hearts container
+            heartsContainer.style.transform = `translateY(${-scrollRatio * 40}px)`;
+        });
+
+        // Dark Theme Press Here Button Click Event
+        loveBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            playClickSound();
+            explodeHearts();
+            loveBtn.textContent = "Forever & Always 🖤❤️";
+            loveBtn.style.background = "linear-gradient(135deg, #1f0005, #59000d)";
+            loveBtn.style.borderColor = "#ff4d6d";
+            loveBtn.style.boxShadow = "0 0 15px rgba(255, 77, 109, 0.6)";
+        });
+
+        // Background Hearts
         function createFloatingHearts() {
             const container = document.getElementById('heartsContainer');
-            const heartSymbols = ['❤️', '💖', '💕', '💗', '💓'];
+            const heartSymbols = ['❤️', '🖤', '💖', '💗', '🖤'];
 
             for (let i = 0; i < 25; i++) {
                 const heart = document.createElement('div');
